@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Geração de Atividades Adaptadas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen font-sans">
+  
+  <header class="bg-blue-700 text-white shadow-md p-6">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold">Portal do Professor - Atividades Adaptadas</h1>
+        <p class="text-blue-100 text-sm mt-1">Conformidade Pedagógica e Acessibilidade (WCAG 2.1 AA)</p>
+      </div>
+      <span class="bg-blue-800 text-xs px-3 py-1.5 rounded-full font-semibold">Professor Conectado</span>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto p-6 mt-6">
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
+      <h2 class="text-xl font-bold text-slate-800 mb-2">Parâmetros da Aula e Perfil do Aluno</h2>
+      <p class="text-sm text-slate-600 mb-6">Preencha as informações pedagógicas para gerar um lote com no mínimo 10 atividades adaptadas.</p>
+
+      <form action="/gerar" method="POST" class="space-y-6">
+        
+        <!-- Disciplina e Turma -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="disciplina" class="block text-sm font-semibold text-slate-700 mb-1">Disciplina *</label>
+            <input type="text" id="disciplina" name="disciplina" required placeholder="Ex.: Ciências, Matemática"
+              class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          </div>
+          <div>
+            <label for="serie_turma" class="block text-sm font-semibold text-slate-700 mb-1">Ano / Série da Turma *</label>
+            <input type="text" id="serie_turma" name="serie_turma" required placeholder="Ex.: 5º ano fundamental"
+              class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          </div>
+        </div>
+
+        <!-- Tema da Aula -->
+        <div>
+          <label for="tema" class="block text-sm font-semibold text-slate-700 mb-1">Tema da Aula *</label>
+          <input type="text" id="tema" name="tema" required placeholder="Ex.: Sistema Solar e Rotação da Terra"
+            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+
+        <!-- Descrição -->
+        <div>
+          <label for="descricao_aula" class="block text-sm font-semibold text-slate-700 mb-1">Breve Descrição do Conteúdo *</label>
+          <textarea id="descricao_aula" name="descricao_aula" rows="3" required placeholder="Explique os pontos que deseja reforçar na atividade..."
+            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+        </div>
+
+        <!-- Perfil Diagnóstico e Densidade Visual -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="diagnostico_codigo" class="block text-sm font-semibold text-slate-700 mb-1">Diagnóstico / NEE (RF-03) *</label>
+            <select id="diagnostico_codigo" name="diagnostico_codigo" required
+              class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white">
+              {% for d in diagnosticos %}
+                <option value="{{ d.codigo }}">{{ d.nome }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div>
+            <label for="densidade_visual" class="block text-sm font-semibold text-slate-700 mb-1">Densidade Visual (RF-04) *</label>
+            <select id="densidade_visual" name="densidade_visual" required
+              class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white">
+              <option value="MAIS_IMAGENS">Mais imagens (Obrigatório em todas as questões - RN-04)</option>
+              <option value="PADRAO" selected>Padrão (Misto balanceado)</option>
+              <option value="MENOS_IMAGENS_TEXTO_SIMPLIFICADO">Menos imagens / Texto simplificado</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" 
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow transition focus:ring-4 focus:ring-blue-200">
+          Gerar Lote de Atividades Adaptadas (Mínimo 10 Itens)
+        </button>
+      </form>
+    </div>
+  </main>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Geração de Atividades Adaptadas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen font-sans">
+  <header class="bg-blue-700 text-white shadow-md p-6">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold">Portal do Professor - Atividades Adaptadas</h1>
+        <p class="text-blue-100 text-sm mt-1">Conformidade Pedagógica e Acessibilidade (WCAG 2.1 AA)</p>
+      </div>
+      <span class="bg-blue-800 text-xs px-3 py-1.5 rounded-full font-semibold">Professor Conectado</span>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto p-6 mt-6">
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
+      <h2 class="text-xl font-bold text-slate-800 mb-2">Parâmetros da Aula e Perfil do Aluno</h2>
+      <p class="text-sm text-slate-600 mb-6">Preencha as informações pedagógicas para gerar um lote com no mínimo 10 atividades adaptadas.</p>
+
+      <form action="/gerar" method="POST" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="disciplina" class="block text-sm font-semibold text-slate-700 mb-1">Disciplina *</label>
+            <input type="text" id="disciplina" name="disciplina" required placeholder="Ex.: Ciências, Matemática"
+              class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          </div>
+          <div>
+            <label for="serie_turma" class="block text-sm font-semibold text-slate-700 mb-1">Ano / Série da Turma *</label>
+            <input type="text" id="serie_turma" name="serie_turma" required placeholder="Ex.: 5º ano fundamental"
+              class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          </div>
+        </div>
+
+        <div>
+          <label for="tema" class="block text-sm font-semibold text-slate-700 mb-1">Tema da Aula *</label>
+          <input type="text" id="tema" name="tema" required placeholder="Ex.: Sistema Solar e Rotação da Terra"
+            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+
+        <div>
+          <label for="descricao_aula" class="block text-sm font-semibold text-slate-700 mb-1">Breve Descrição do Conteúdo *</label>
+          <textarea id="descricao_aula" name="descricao_aula" rows="3" required placeholder="Explique os pontos que deseja reforçar na atividade..."
+            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="diagnostico_codigo" class="block text-sm font-semibold text-slate-700 mb-1">Diagnóstico / NEE (RF-03) *</label>
+            <select id="diagnostico_codigo" name="diagnostico_codigo" required
+              class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white">
+              {% for d in diagnosticos %}
+                <option value="{{ d.codigo }}">{{ d.nome }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div>
+            <label for="densidade_visual" class="block text-sm font-semibold text-slate-700 mb-1">Densidade Visual (RF-04) *</label>
+            <select id="densidade_visual" name="densidade_visual" required
+              class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white">
+              <option value="MAIS_IMAGENS">Mais imagens (Obrigatório em todas as questões - RN-04)</option>
+              <option value="PADRAO" selected>Padrão (Misto balanceado)</option>
+              <option value="MENOS_IMAGENS_TEXTO_SIMPLIFICADO">Menos imagens / Texto simplificado</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" 
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow transition focus:ring-4 focus:ring-blue-200">
+          Gerar Lote de Atividades Adaptadas (Mínimo 10 Itens)
+        </button>
+      </form>
+    </div>
+  </main>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Geração de Atividades Adaptadas</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen font-sans">
+  
+  <header class="bg-blue-700 text-white shadow-md p-6">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold">Portal do Professor - Atividades Adaptadas</h1>
+        <p class="text-blue-100 text-sm mt-1">Conformidade Pedagógica e Acessibilidade (WCAG 2.1 AA)</p>
+      </div>
+      <span class="bg-blue-800 text-xs px-3 py-1.5 rounded-full font-semibold">Professor Conectado</span>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto p-6 mt-6">
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
+      <h2 class="text-xl font-bold text-slate-800 mb-2">Parâmetros da Aula e Perfil do Aluno</h2>
+      <p class="text-sm text-slate-600 mb-6">Preencha as informações pedagógicas para gerar um lote com no mínimo 10 atividades adaptadas.</p>
+
+      <form action="/gerar" method="POST" class="space-y-6">
+        
+        <!-- Disciplina e Turma -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="disciplina" class="block text-sm font-semibold text-slate-700 mb-1">Disciplina *</label>
+            <input type="text" id="disciplina" name="disciplina" required placeholder="Ex.: Ciências, Matemática"
+              class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          </div>
+          <div>
+            <label for="serie_turma" class="block text-sm font-semibold text-slate-700 mb-1">Ano / Série da Turma *</label>
+            <input type="text" id="serie_turma" name="serie_turma" required placeholder="Ex.: 5º ano fundamental"
+              class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          </div>
+        </div>
+
+        <!-- Tema da Aula -->
+        <div>
+          <label for="tema" class="block text-sm font-semibold text-slate-700 mb-1">Tema da Aula *</label>
+          <input type="text" id="tema" name="tema" required placeholder="Ex.: Sistema Solar e Rotação da Terra"
+            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+
+        <!-- Descrição -->
+        <div>
+          <label for="descricao_aula" class="block text-sm font-semibold text-slate-700 mb-1">Breve Descrição do Conteúdo *</label>
+          <textarea id="descricao_aula" name="descricao_aula" rows="3" required placeholder="Explique os pontos que deseja reforçar na atividade..."
+            class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+        </div>
+
+        <!-- Perfil Diagnóstico e Densidade Visual -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="diagnostico_codigo" class="block text-sm font-semibold text-slate-700 mb-1">Diagnóstico / NEE (RF-03) *</label>
+            <select id="diagnostico_codigo" name="diagnostico_codigo" required
+              class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white">
+              {% for d in diagnosticos %}
+                <option value="{{ d.codigo }}">{{ d.nome }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div>
+            <label for="densidade_visual" class="block text-sm font-semibold text-slate-700 mb-1">Densidade Visual (RF-04) *</label>
+            <select id="densidade_visual" name="densidade_visual" required
+              class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white">
+              <option value="MAIS_IMAGENS">Mais imagens (Obrigatório em todas as questões - RN-04)</option>
+              <option value="PADRAO" selected>Padrão (Misto balanceado)</option>
+              <option value="MENOS_IMAGENS_TEXTO_SIMPLIFICADO">Menos imagens / Texto simplificado</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" 
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow transition focus:ring-4 focus:ring-blue-200">
+          Gerar Lote de Atividades Adaptadas (Mínimo 10 Itens)
+        </button>
+      </form>
+    </div>
+  </main>
+</body>
+</html>

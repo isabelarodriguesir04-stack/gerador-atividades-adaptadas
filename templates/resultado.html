@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lote de Atividades - {{ tema }}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @media print {
+      body { background-color: white !important; font-size: 12pt; }
+      .no-print { display: none !important; }
+      .page-card { 
+        box-shadow: none !important; 
+        border: 1px solid #d1d5db !important; 
+        page-break-inside: avoid; 
+        margin-bottom: 1.5rem !important; 
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-900 min-h-screen p-6">
+  
+  <div class="max-w-4xl mx-auto mb-6 flex justify-between items-center no-print">
+    <a href="/" class="text-blue-600 hover:underline font-semibold">← Voltar ao Formulário</a>
+    <div class="space-x-3">
+      <button onclick="window.print()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-5 rounded-lg shadow">
+        🖨️ Imprimir Folhas (A4) / Salvar PDF
+      </button>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto space-y-4">
+    <!-- Cabeçalho Pedagógico da Folha -->
+    <div class="bg-white p-6 rounded-xl border border-slate-300 shadow-sm">
+      <div class="border-b pb-4 mb-4">
+        <h1 class="text-2xl font-bold text-slate-900">Atividades Adaptadas - {{ disciplina }}</h1>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2 text-sm text-slate-600">
+          <p><strong>Turma:</strong> {{ serie_turma }}</p>
+          <p><strong>Tema:</strong> {{ tema }}</p>
+          <p><strong>Perfil:</strong> {{ diagnostico_nome }}</p>
+          <p><strong>Densidade:</strong> {{ densidade_visual }}</p>
+        </div>
+      </div>
+      <div class="text-xs text-slate-500">
+        Nome do Aluno: __________________________________________________ Data: ____/____/________
+      </div>
+    </div>
+
+    <!-- Lista de Atividades (RN-02: Mínimo 10) -->
+    {% for item in atividades %}
+    <div class="page-card bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex gap-6 items-start">
+      <div class="flex-1">
+        <h2 class="text-lg font-bold text-blue-800">{{ item.enunciado }}</h2>
+        <p class="text-sm font-medium text-slate-600 mt-1 mb-4 italic">{{ item.instrucao }}</p>
+        <div class="border-b border-dashed border-slate-300 pt-8 pb-2 text-xs text-slate-400">
+          Resposta:
+        </div>
+      </div>
+
+      <!-- Suporte Visual / Pictograma (RN-04 e RNF-01) -->
+      {% if item.tem_imagem %}
+      <div class="w-24 h-24 bg-blue-50 border border-blue-200 rounded-lg p-2 flex flex-col items-center justify-center text-center flex-shrink-0">
+        <img src="data:image/svg+xml;base64,{{ item.imagem_base64 }}" 
+             alt="Pictograma de apoio para a questão {{ item.numero }}" 
+             class="w-12 h-12 mb-1">
+        <span class="text-[10px] text-blue-800 font-semibold leading-tight">Apoio Visual</span>
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lote de Atividades - {{ tema }}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @media print {
+      body { background-color: white !important; font-size: 12pt; }
+      .no-print { display: none !important; }
+      .page-card { 
+        box-shadow: none !important; 
+        border: 1px solid #d1d5db !important; 
+        page-break-inside: avoid; 
+        margin-bottom: 1.5rem !important; 
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-900 min-h-screen p-6">
+  <div class="max-w-4xl mx-auto mb-6 flex justify-between items-center no-print">
+    <a href="/" class="text-blue-600 hover:underline font-semibold">← Voltar ao Formulário</a>
+    <div class="space-x-3">
+      <button onclick="window.print()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-5 rounded-lg shadow">
+        🖨️ Imprimir Folhas (A4) / Salvar PDF
+      </button>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto space-y-4">
+    <div class="bg-white p-6 rounded-xl border border-slate-300 shadow-sm">
+      <div class="border-b pb-4 mb-4">
+        <h1 class="text-2xl font-bold text-slate-900">Atividades Adaptadas - {{ disciplina }}</h1>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2 text-sm text-slate-600">
+          <p><strong>Turma:</strong> {{ serie_turma }}</p>
+          <p><strong>Tema:</strong> {{ tema }}</p>
+          <p><strong>Perfil:</strong> {{ diagnostico_nome }}</p>
+          <p><strong>Densidade:</strong> {{ densidade_visual }}</p>
+        </div>
+      </div>
+      <div class="text-xs text-slate-500">
+        Nome do Aluno: __________________________________________________ Data: ____/____/________
+      </div>
+    </div>
+
+    {% for item in atividades %}
+    <div class="page-card bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex gap-6 items-start">
+      <div class="flex-1">
+        <h2 class="text-lg font-bold text-blue-800">{{ item.enunciado }}</h2>
+        <p class="text-sm font-medium text-slate-600 mt-1 mb-4 italic">{{ item.instrucao }}</p>
+        <div class="border-b border-dashed border-slate-300 pt-8 pb-2 text-xs text-slate-400">
+          Resposta:
+        </div>
+      </div>
+
+      {% if item.tem_imagem %}
+      <div class="w-24 h-24 bg-blue-50 border border-blue-200 rounded-lg p-2 flex flex-col items-center justify-center text-center flex-shrink-0">
+        <img src="data:image/svg+xml;base64,{{ item.imagem_base64 }}" 
+             alt="Pictograma de apoio para a questão {{ item.numero }}" 
+             class="w-12 h-12 mb-1">
+        <span class="text-[10px] text-blue-800 font-semibold leading-tight">Apoio Visual</span>
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lote de Atividades - {{ tema }}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @media print {
+      body { background-color: white !important; font-size: 12pt; }
+      .no-print { display: none !important; }
+      .page-card { 
+        box-shadow: none !important; 
+        border: 1px solid #d1d5db !important; 
+        page-break-inside: avoid; 
+        margin-bottom: 1.5rem !important; 
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-900 min-h-screen p-6">
+  <div class="max-w-4xl mx-auto mb-6 flex justify-between items-center no-print">
+    <a href="/" class="text-blue-600 hover:underline font-semibold">← Voltar ao Formulário</a>
+    <div class="space-x-3">
+      <button onclick="window.print()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 px-5 rounded-lg shadow">
+        🖨️ Imprimir Folhas (A4) / Salvar PDF
+      </button>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto space-y-4">
+    <div class="bg-white p-6 rounded-xl border border-slate-300 shadow-sm">
+      <div class="border-b pb-4 mb-4">
+        <h1 class="text-2xl font-bold text-slate-900">Atividades Adaptadas - {{ disciplina }}</h1>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2 text-sm text-slate-600">
+          <p><strong>Turma:</strong> {{ serie_turma }}</p>
+          <p><strong>Tema:</strong> {{ tema }}</p>
+          <p><strong>Perfil:</strong> {{ diagnostico_nome }}</p>
+          <p><strong>Densidade:</strong> {{ densidade_visual }}</p>
+        </div>
+      </div>
+      <div class="text-xs text-slate-500">
+        Nome do Aluno: __________________________________________________ Data: ____/____/________
+      </div>
+    </div>
+
+    {% for item in atividades %}
+    <div class="page-card bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex gap-6 items-start">
+      <div class="flex-1">
+        <h2 class="text-lg font-bold text-blue-800">{{ item.enunciado }}</h2>
+        <p class="text-sm font-medium text-slate-600 mt-1 mb-4 italic">{{ item.instrucao }}</p>
+        <div class="border-b border-dashed border-slate-300 pt-8 pb-2 text-xs text-slate-400">
+          Resposta:
+        </div>
+      </div>
+
+      {% if item.tem_imagem %}
+      <div class="w-24 h-24 bg-blue-50 border border-blue-200 rounded-lg p-2 flex flex-col items-center justify-center text-center flex-shrink-0">
+        <img src="data:image/svg+xml;base64,{{ item.imagem_base64 }}" 
+             alt="Pictograma de apoio para a questão {{ item.numero }}" 
+             class="w-12 h-12 mb-1">
+        <span class="text-[10px] text-blue-800 font-semibold leading-tight">Apoio Visual</span>
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</body>
+</html>
